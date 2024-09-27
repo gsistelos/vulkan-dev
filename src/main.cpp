@@ -1,30 +1,16 @@
-#include "VulkanDev.hpp"
+#include "VulkanApp.hpp"
+
+#include <iostream>
 
 int main() {
-    glfwInit();
+    VulkanApp va;
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow *window =
-        glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
-
-    uint32_t extensionCount = 0;
-    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-
-    std::cout << extensionCount << " extensions supported\n";
-
-    glm::mat4 matrix;
-    glm::vec4 vec;
-
-    auto test = matrix * vec;
-    (void)test;
-
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
+    try {
+        va.run();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return EXIT_FAILURE;
     }
 
-    glfwDestroyWindow(window);
-
-    glfwTerminate();
-
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -1,5 +1,7 @@
 #include "VulkanApp.hpp"
 
+#include "VulkanDev.hpp"
+#include "utils.hpp"
 #include <stdexcept>
 
 void VulkanApp::run(void) {
@@ -17,13 +19,19 @@ void VulkanApp::initWindow(void) {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-    window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, nullptr, nullptr);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
+                              nullptr, nullptr);
     if (!window) {
         throw std::runtime_error("failed to create window");
     }
 }
 
-void VulkanApp::initVulkan(void) { createInstance(); }
+void VulkanApp::initVulkan(void) {
+    createInstance();
+    if (ENABLE_VALIDATION_LAYERS) {
+        setupDebugMessenger();
+    }
+}
 
 void VulkanApp::mainLoop(void) {
     while (!glfwWindowShouldClose(window)) {
@@ -32,6 +40,10 @@ void VulkanApp::mainLoop(void) {
 }
 
 void VulkanApp::cleanup(void) {
+    if (ENABLE_VALIDATION_LAYERS) {
+        destroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+    }
+
     vkDestroyInstance(instance, nullptr);
 
     glfwDestroyWindow(window);
@@ -39,6 +51,12 @@ void VulkanApp::cleanup(void) {
 }
 
 void VulkanApp::createInstance(void) {
+    if (ENABLE_VALIDATION_LAYERS &&
+        !checkValidationLayersSupport(VALIDATION_LAYERS)) {
+        throw std::runtime_error(
+            "validation layers requested but not available");
+    }
+
     VkApplicationInfo appInfo{};
 
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -53,20 +71,35 @@ void VulkanApp::createInstance(void) {
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo = &appInfo;
 
-    uint32_t glfwExtensionCount = 0;
-    const char **glfwExtensions;
+    auto extensions = getRequiredExtensions();
 
-    glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-    if (!glfwExtensions) {
-        throw std::runtime_error("failed to get required instance extensions");
+    createInfo.enabledExtensionCount = extensions.size();
+    createInfo.ppEnabledExtensionNames = extensions.data();
+
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+
+    if (ENABLE_VALIDATION_LAYERS) {
+        createInfo.enabledLayerCount = VALIDATION_LAYERS.size();
+        createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
+
+        populateDebugMessengerCreateInfo(debugCreateInfo);
+        createInfo.pNext = &debugCreateInfo;
+    } else {
+        createInfo.enabledLayerCount = 0;
+        createInfo.pNext = nullptr;
     }
-
-    createInfo.enabledExtensionCount = glfwExtensionCount;
-    createInfo.ppEnabledExtensionNames = glfwExtensions;
-
-    createInfo.enabledLayerCount = 0;
 
     if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
         throw std::runtime_error("failed to create instance");
+    }
+}
+
+void VulkanApp::setupDebugMessenger(void) {
+    VkDebugUtilsMessengerCreateInfoEXT createInfo{};
+    populateDebugMessengerCreateInfo(createInfo);
+
+    if (createDebugUtilsMessengerEXT(instance, &createInfo, nullptr,
+                                     &debugMessenger) != VK_SUCCESS) {
+        throw std::runtime_error("failed to create debug messenger");
     }
 }

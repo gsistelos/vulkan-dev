@@ -1,15 +1,16 @@
 #ifndef VULKAN_APP_HPP
 #define VULKAN_APP_HPP
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WINDOW_TITLE "Vulkan"
 
-#define TITLE "Vulkan"
 #define APPLICATION_NAME "VulkanDev"
 #define ENGINE_NAME "No Engine"
+
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 
 class VulkanApp {
   public:
@@ -17,7 +18,9 @@ class VulkanApp {
 
   private:
     GLFWwindow *window;
+
     VkInstance instance;
+    VkDebugUtilsMessengerEXT debugMessenger;
 
     void initWindow(void);
     void initVulkan(void);
@@ -27,6 +30,7 @@ class VulkanApp {
     void cleanup(void);
 
     void createInstance(void);
+    void setupDebugMessenger(void);
 };
 
 #endif // VULKAN_APP_HPP

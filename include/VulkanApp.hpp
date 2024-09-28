@@ -4,23 +4,19 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-#include <cstdint>
+#define WIDTH 800
+#define HEIGHT 600
+
+#define TITLE "Vulkan"
+#define APPLICATION_NAME "VulkanDev"
+#define ENGINE_NAME "No Engine"
 
 class VulkanApp {
   public:
     void run(void);
 
   private:
-    const uint32_t WIDTH = 800;
-    const uint32_t HEIGHT = 600;
-
-    const char *TITLE = "Vulkan";
-
     GLFWwindow *window;
-
-    const char *APP_NAME = "VulkanDev";
-    const char *ENGINE_NAME = "No Engine";
-
     VkInstance instance;
 
     void initWindow(void);
@@ -29,6 +25,8 @@ class VulkanApp {
     void mainLoop(void);
 
     void cleanup(void);
+
+    void createInstance(void);
 };
 
 #endif // VULKAN_APP_HPP

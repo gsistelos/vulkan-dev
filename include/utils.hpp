@@ -18,6 +18,8 @@ void destroyDebugUtilsMessengerEXT(VkInstance instance,
 
 std::vector<const char *> getRequiredExtensions(void);
 
+bool isDeviceSuitable(VkPhysicalDevice device);
+
 void populateDebugMessengerCreateInfo(
     VkDebugUtilsMessengerCreateInfoEXT &createInfo);
 

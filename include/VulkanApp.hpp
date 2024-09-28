@@ -21,6 +21,7 @@ class VulkanApp {
 
     VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
     void initWindow(void);
     void initVulkan(void);
@@ -31,6 +32,7 @@ class VulkanApp {
 
     void createInstance(void);
     void setupDebugMessenger(void);
+    void pickPhysicalDevice(void);
 };
 
 #endif // VULKAN_APP_HPP

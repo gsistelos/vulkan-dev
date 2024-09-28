@@ -1,6 +1,6 @@
 # vulkan-dev
 
-Learning how [Vulkan](https://www.vulkan.org/) works.
+Learning how [Vulkan](https://www.vulkan.org/) works, following [Vulkan Tutorial](https://vulkan-tutorial.com/)
 
 ## Setup
 

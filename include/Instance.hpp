@@ -1,20 +1,34 @@
 #ifndef INSTANCE_HPP
 #define INSTANCE_HPP
 
-#include <vulkan/vulkan_core.h>
+#ifdef NDEBUG
+#define ENABLE_VALIDATION_LAYERS false
+#else
+#define ENABLE_VALIDATION_LAYERS true
+#endif
+
+#include "DebugMessenger.hpp"
+#include <vector>
+
+const std::vector<const char *> VALIDATION_LAYERS = {
+    "VK_LAYER_KHRONOS_validation",
+};
 
 class Instance {
   public:
     Instance(void);
     ~Instance();
 
-    VkInstance &getInstance(void);
-
   private:
     VkInstance instance;
+    DebugMessenger debugMessenger;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
     const char *APPLICATION_NAME = "Vulkan Dev";
     const char *ENGINE_NAME = "No Engine";
+
+    void createInstance(void);
+    void pickPhysicalDevice(void);
 };
 
 #endif // INSTANCE_HPP

@@ -13,10 +13,12 @@ static std::vector<const char *> getRequiredExtensions(void) {
 
     glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
     if (!glfwExtensions) {
-        throw std::runtime_error("failed to get required instance extensions");
+        throw std::runtime_error(
+            "failed to get required instance extensions");
     }
 
-    std::vector<const char *> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+    std::vector<const char *> extensions(
+        glfwExtensions, glfwExtensions + glfwExtensionCount);
 
     if (ENABLE_VALIDATION_LAYERS) {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
@@ -88,7 +90,8 @@ void Instance::createInstance(void) {
 
     if (ENABLE_VALIDATION_LAYERS) {
         if (!checkValidationLayersSupport()) {
-            throw std::runtime_error("validation layers requested but not available");
+            throw std::runtime_error(
+                "validation layers requested but not available");
         }
 
         createInfo.enabledLayerCount = VALIDATION_LAYERS.size();
@@ -111,7 +114,8 @@ void Instance::pickPhysicalDevice(void) {
     vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
     if (deviceCount == 0) {
-        throw std::runtime_error("failed to find GPUs with Vulkan support");
+        throw std::runtime_error(
+            "failed to find GPUs with Vulkan support");
     }
 
     std::vector<VkPhysicalDevice> devices(deviceCount);

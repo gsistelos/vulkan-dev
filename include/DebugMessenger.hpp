@@ -5,8 +5,8 @@
 
 class DebugMessenger {
   public:
-    void setup(const VkInstance &instance);
-    void destroy(const VkInstance &instance);
+    void setup(VkInstance &instance);
+    void destroy(VkInstance &instance);
 
   private:
     VkDebugUtilsMessengerEXT debugMessenger;

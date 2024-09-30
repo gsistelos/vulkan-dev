@@ -3,7 +3,9 @@
 
 #include <vulkan/vulkan_core.h>
 
-bool isDeviceSuitable(VkPhysicalDevice device);
-void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT &createInfo);
+bool isDeviceSuitable(const VkPhysicalDevice &device);
+
+void populateDebugMessengerCreateInfo(
+    VkDebugUtilsMessengerCreateInfoEXT &createInfo);
 
 #endif // UTILS_HPP

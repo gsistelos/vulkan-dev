@@ -3,6 +3,7 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+#include "DebugCreateInfo.hpp"
 #include "utils.hpp"
 #include <cstring>
 #include <stdexcept>
@@ -86,7 +87,7 @@ void Instance::createInstance(void) {
     createInfo.enabledExtensionCount = extensions.size();
     createInfo.ppEnabledExtensionNames = extensions.data();
 
-    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+    DebugCreateInfo debugCreateInfo;
 
     if (ENABLE_VALIDATION_LAYERS) {
         if (!checkValidationLayersSupport()) {
@@ -97,8 +98,7 @@ void Instance::createInstance(void) {
         createInfo.enabledLayerCount = VALIDATION_LAYERS.size();
         createInfo.ppEnabledLayerNames = VALIDATION_LAYERS.data();
 
-        populateDebugMessengerCreateInfo(debugCreateInfo);
-        createInfo.pNext = &debugCreateInfo;
+        createInfo.pNext = &debugCreateInfo.getInfo();
     } else {
         createInfo.enabledLayerCount = 0;
         createInfo.pNext = nullptr;

@@ -1,6 +1,6 @@
 #include "DebugMessenger.hpp"
 
-#include "utils.hpp"
+#include "DebugCreateInfo.hpp"
 #include <stdexcept>
 
 static VkResult createDebugUtilsMessengerEXT(
@@ -31,11 +31,10 @@ static void destroyDebugUtilsMessengerEXT(
 }
 
 void DebugMessenger::setup(VkInstance &instance) {
-    VkDebugUtilsMessengerCreateInfoEXT createInfo{};
-    populateDebugMessengerCreateInfo(createInfo);
+    DebugCreateInfo debugCreateInfo;
 
     if (createDebugUtilsMessengerEXT(
-            instance, &createInfo, nullptr, &debugMessenger) != VK_SUCCESS) {
+            instance, &debugCreateInfo.getInfo(), nullptr, &debugMessenger) != VK_SUCCESS) {
         throw std::runtime_error("failed to create debug messenger");
     }
 }

@@ -8,6 +8,7 @@
 #endif
 
 #include "DebugMessenger.hpp"
+#include "PhysicalDevice.hpp"
 #include <vector>
 
 const std::vector<const char *> VALIDATION_LAYERS = {
@@ -22,7 +23,7 @@ class Instance {
   private:
     VkInstance instance;
     DebugMessenger debugMessenger;
-    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    PhysicalDevice physicalDevice;
 
     const char *APPLICATION_NAME = "Vulkan Dev";
     const char *ENGINE_NAME = "No Engine";

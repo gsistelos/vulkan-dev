@@ -5,25 +5,11 @@
 #include <stdexcept>
 
 void VulkanApp::run(void) {
-    initWindow();
     initVulkan();
 
     mainLoop();
 
     cleanup();
-}
-
-void VulkanApp::initWindow(void) {
-    glfwInit();
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
-                              nullptr, nullptr);
-    if (!window) {
-        throw std::runtime_error("failed to create window");
-    }
 }
 
 void VulkanApp::initVulkan(void) {
@@ -35,7 +21,7 @@ void VulkanApp::initVulkan(void) {
 }
 
 void VulkanApp::mainLoop(void) {
-    while (!glfwWindowShouldClose(window)) {
+    while (!window.shouldClose()) {
         glfwPollEvents();
     }
 }
@@ -46,9 +32,6 @@ void VulkanApp::cleanup(void) {
     }
 
     vkDestroyInstance(instance, nullptr);
-
-    glfwDestroyWindow(window);
-    glfwTerminate();
 }
 
 void VulkanApp::createInstance(void) {

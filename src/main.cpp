@@ -2,10 +2,9 @@
 
 #include <iostream>
 
-int main() {
-    VulkanApp va;
-
+int main(void) {
     try {
+        VulkanApp va;
         va.run();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;

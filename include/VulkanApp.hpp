@@ -1,9 +1,7 @@
 #ifndef VULKAN_APP_HPP
 #define VULKAN_APP_HPP
 
-#define APPLICATION_NAME "VulkanDev"
-#define ENGINE_NAME "No Engine"
-
+#include "Instance.hpp"
 #include "Window.hpp"
 
 class VulkanApp {
@@ -12,12 +10,11 @@ class VulkanApp {
 
   private:
     Window window;
+    Instance instance;
 
-    VkInstance instance;
     VkDebugUtilsMessengerEXT debugMessenger;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
-    void initWindow(void);
     void initVulkan(void);
 
     void mainLoop(void);

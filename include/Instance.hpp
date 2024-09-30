@@ -22,6 +22,7 @@ class Instance {
 
   private:
     VkInstance instance;
+
     DebugMessenger debugMessenger;
     PhysicalDevice physicalDevice;
 

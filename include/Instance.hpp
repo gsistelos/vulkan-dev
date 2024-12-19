@@ -7,9 +7,8 @@
 #define ENABLE_VALIDATION_LAYERS true
 #endif
 
-#include "DebugMessenger.hpp"
-#include "PhysicalDevice.hpp"
 #include <vector>
+#include <vulkan/vulkan_core.h>
 
 const std::vector<const char *> VALIDATION_LAYERS = {
     "VK_LAYER_KHRONOS_validation",
@@ -23,13 +22,18 @@ class Instance {
   private:
     VkInstance instance;
 
-    DebugMessenger debugMessenger;
-    PhysicalDevice physicalDevice;
+    VkDebugUtilsMessengerEXT debugMessenger;
+
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
 
     const char *APPLICATION_NAME = "Vulkan Dev";
     const char *ENGINE_NAME = "No Engine";
 
     void createInstance(void);
+
+    void setupDebugMessenger(void);
+    void destroyDebugMessenger(void);
+
     void pickPhysicalDevice(void);
 };
 
